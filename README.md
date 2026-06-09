@@ -1,2 +1,2 @@
-# paasta_2026_denovo
-Practical session for paasta bioinformatics school 2026
+ ### _De novo_ section for PAASTA Bioinformatics Summer School 2026
+**Quick Start** : Click paasta_denovo.ipynb and then open in Colab💻
