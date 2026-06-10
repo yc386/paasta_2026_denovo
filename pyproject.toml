@@ -1,0 +1,67 @@
+[project]
+name = "paasta-2026-denovo"
+version = "0.1.0"
+description = "Local environment for the PAASTA 2026 de novo sequencing workshop notebook"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # --- de novo sequencing ---
+    "instanovo[cu126]>=1.2.2",
+    "torch==2.6.0",  # CUDA 12.6 build, pulled from the cu126 index (see [tool.uv.sources])
+    # torch's CUDA runtime libs, pinned to the torch 2.6.0+cu126 x86_64 wheel.
+    # These MUST be listed explicitly: uv reads torch's dependency metadata from the
+    # pytorch index inconsistently and otherwise OMITS them, so `uv sync` installs a
+    # torch that can't load (e.g. "libcusparseLt.so.0: cannot open shared object file").
+    # (Resolution is pinned to Linux x86_64 via [tool.uv] environments below.)
+    "nvidia-cublas-cu12==12.6.4.1",
+    "nvidia-cuda-cupti-cu12==12.6.80",
+    "nvidia-cuda-nvrtc-cu12==12.6.77",
+    "nvidia-cuda-runtime-cu12==12.6.77",
+    "nvidia-cudnn-cu12==9.5.1.17",
+    "nvidia-cufft-cu12==11.3.0.4",
+    "nvidia-curand-cu12==10.3.7.77",
+    "nvidia-cusolver-cu12==11.7.1.2",
+    "nvidia-cusparse-cu12==12.5.4.2",
+    "nvidia-cusparselt-cu12==0.6.3",
+    "nvidia-nccl-cu12==2.21.5",
+    "nvidia-nvjitlink-cu12==12.6.85",
+    "nvidia-nvtx-cu12==12.6.77",
+    "triton==3.2.0",
+    # --- file handling / parsing ---
+    "biopython",
+    "pyteomics",
+    "psims",
+    "lxml",
+    "polars",
+    "pyarrow",
+    # --- spectra visualisation ---
+    "spectrum-utils",
+    # --- notebook tooling (run locally in Jupyter / VS Code) ---
+    "ipykernel",
+    "ipywidgets",
+    "jupyterlab",
+    "pip",
+]
+
+# winnow (Step 7, optional/advanced) is intentionally NOT included: winnow-fdr
+# requires torch>=2.10, which conflicts with InstaNovo's torch==2.6.0 above - they
+# can't share one environment. Run Step 7 on Colab, or in a separate throwaway env:
+#   uv pip install "winnow-fdr @ git+https://github.com/instadeepai/winnow.git@revisions"
+
+# uv: pull torch from the CUDA 12.6 wheel index.
+# See https://docs.astral.sh/uv/guides/integration/pytorch/
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu126" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv]
+# This project is just an environment spec, not an installable package.
+package = false
+# Pin resolution to the workshop's target platform (also Colab's): Linux x86_64.
+# Keeps the lock single-platform and lets the explicit nvidia-*-cu12 pins resolve
+# cleanly. For Mac/CPU support, switch to InstaNovo's cpu/cu124/cu126 extras pattern.
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
