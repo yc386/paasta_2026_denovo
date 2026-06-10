@@ -1,0 +1,11 @@
+20240425-2151_QEHF3_1007093_ONJ_TR_MC_BLG_LS_T12_3.raw
+20240425-2151_QEHF3_1007093_ONJ_TR_MC_BLG_LS_T12_3.mzML
+
+ThermoRawFileParser-v.2.0.0-dev-linux.zip
+ThermoRawFileParser/
+
+subset_100_winnow.parquet
+subset_100.parquet
+subset_100.mgf
+
+preds.csv
