@@ -9,3 +9,6 @@ subset_100.parquet
 subset_100.mgf
 
 preds.csv
+
+winnow_results/metadata.csv
+winnow_results/preds_and_fdr_metrics.csv
