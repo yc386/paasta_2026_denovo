@@ -4,8 +4,8 @@
 ThermoRawFileParser-v.2.0.0-dev-linux.zip
 ThermoRawFileParser/
 
-head_100_winnow.parquet
-head_100.parquet
-head_100.mgf
+subset_100_winnow.parquet
+subset_100.parquet
+subset_100.mgf
 
 preds.csv
